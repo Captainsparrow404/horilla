@@ -77,4 +77,9 @@ gunicorn
 psycopg2-binary
 whitenoise
 django-storages
-pip install dj-database-url
+Django>=4.1
+gunicorn
+dj-database-url
+psycopg2-binary
+whitenoise
+python-decouple
