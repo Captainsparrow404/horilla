@@ -4,9 +4,7 @@ services:
     env: docker
     plan: free
     dockerfilePath: ./Dockerfile
-    startCommand: |
-      python manage.py migrate &&
-      gunicorn horilla.wsgi:application --bind 0.0.0.0:$PORT
+    startCommand: ./start.sh
     envVars:
       - key: DATABASE_URL
         value: postgresql://horilla_db_8v6t_user:LCi4J0Lth2Dr5QaDCu2FLWiMPh19bLIP@dpg-d27rqmfdiees73d0psv0-a.oregon-postgres.render.com/horilla_db_8v6t
