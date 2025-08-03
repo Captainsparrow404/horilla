@@ -15,20 +15,17 @@ RUN apt-get update && apt-get install -y \
 # Set work directory
 WORKDIR /app
 
-# Copy project files into the container
+# Copy project files
 COPY . .
-
-# 🔐 Make the shell script executable (adjust the name if different)
-RUN chmod +x ./start.sh
 
 # Install Python dependencies
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Collect static files
-RUN python manage.py collectstatic --noinput
+# ✅ Make start.sh executable
+RUN chmod +x start.sh
 
-# Expose port
+# Expose port for the app
 EXPOSE 8000
 
-# ✅ Use the executable shell script to start your app (adjust path if needed)
+# ✅ Run start script at container startup (runs migrations, collectstatic, gunicorn)
 CMD ["./start.sh"]
