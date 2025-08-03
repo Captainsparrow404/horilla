@@ -3,12 +3,14 @@ services:
     name: horilla
     env: docker
     plan: free
-    region: oregon
     dockerfilePath: ./Dockerfile
+    startCommand: |
+      python manage.py migrate &&
+      gunicorn horilla.wsgi:application --bind 0.0.0.0:$PORT
     envVars:
-      - key: DJANGO_SETTINGS_MODULE
-        value: horilla.settings
       - key: DATABASE_URL
         value: postgresql://horilla_db_8v6t_user:LCi4J0Lth2Dr5QaDCu2FLWiMPh19bLIP@dpg-d27rqmfdiees73d0psv0-a.oregon-postgres.render.com/horilla_db_8v6t
+      - key: DJANGO_SETTINGS_MODULE
+        value: horilla.settings
       - key: PORT
         value: 8000
