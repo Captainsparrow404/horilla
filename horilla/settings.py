@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from os.path import join
 from pathlib import Path
+import dj_database_url
+import os
 
 import environ
 from django.contrib.messages import constants as messages
@@ -114,9 +116,17 @@ WSGI_APPLICATION = "horilla.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+env = environ.Env()
+environ.Env.read_env()  # Only needed if using a .env file locally
+
 if env("DATABASE_URL", default=None):
     DATABASES = {
-        "default": env.db(),
+        "default": env.db(),  # Will parse DATABASE_URL env variable
+    }
+
+    # Ensure SSL is required (especially for Render)
+    DATABASES["default"]["OPTIONS"] = {
+        "sslmode": "require",
     }
 else:
     DATABASES = {
@@ -124,10 +134,7 @@ else:
             "ENGINE": env("DB_ENGINE", default="django.db.backends.sqlite3"),
             "NAME": env(
                 "DB_NAME",
-                default=os.path.join(
-                    BASE_DIR,
-                    "TestDB_Horilla.sqlite3",
-                ),
+                default=os.path.join(BASE_DIR, "TestDB_Horilla.sqlite3"),
             ),
             "USER": env("DB_USER", default=""),
             "PASSWORD": env("DB_PASSWORD", default=""),
