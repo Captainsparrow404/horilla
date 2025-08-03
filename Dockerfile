@@ -15,8 +15,11 @@ RUN apt-get update && apt-get install -y \
 # Set work directory
 WORKDIR /app
 
-# Copy project files
+# Copy project files into the container
 COPY . .
+
+# 🔐 Make the shell script executable (adjust the name if different)
+RUN chmod +x ./start.sh
 
 # Install Python dependencies
 RUN pip install --upgrade pip && pip install -r requirements.txt
@@ -27,5 +30,5 @@ RUN python manage.py collectstatic --noinput
 # Expose port
 EXPOSE 8000
 
-# Run the app with Gunicorn (better than Django dev server for prod)
-CMD ["gunicorn", "horilla.wsgi:application", "--bind", "0.0.0.0:8000"]
+# ✅ Use the executable shell script to start your app (adjust path if needed)
+CMD ["./start.sh"]
