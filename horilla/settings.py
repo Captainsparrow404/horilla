@@ -70,7 +70,6 @@ INSTALLED_APPS = [
     "payroll",
     "widget_tweaks",
     "django_apscheduler",
-    "horilla_automations.apps.HorillaAutomationConfig",
 ]
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 
