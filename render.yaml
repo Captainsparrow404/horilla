@@ -16,3 +16,5 @@ services:
         value: targeticon-hrms-6p2l.onrender.com,localhost,127.0.0.1
       - key: CSRF_TRUSTED_ORIGINS
         value: https://targeticon-hrms-6p2l.onrender.com
+      - key: SECRET_KEY
+        value: ro3484532322ndjnnjscnsjsdpkmien%^%$ascjnsacjabsjcb%%&^&^&aknd
