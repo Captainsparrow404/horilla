@@ -1,23 +1,17 @@
 #!/bin/bash
+set -e
 
-set -e  # Exit on any error
-
-echo "Making migrations for all apps..."
+echo "Running migrations..."
 python manage.py makemigrations --noinput
-
-echo "Applying database migrations..."
 python manage.py migrate --noinput
 
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
 
-echo "Starting Gunicorn with Scheduler..."
-
-# Start Gunicorn in background
-gunicorn horilla.wsgi:application --bind 0.0.0.0:$PORT &
-
-# Delay to ensure Gunicorn is up
-sleep 5
-
-# Start Django scheduler
-python manage.py shell -c "from leave.scheduler import start_scheduler; start_scheduler()"
+echo "Starting Gunicorn..."
+exec gunicorn horilla.wsgi:application \
+  --bind 0.0.0.0:$PORT \
+  --workers 3 \
+  --threads 2 \
+  --timeout 120 \
+  --preload
