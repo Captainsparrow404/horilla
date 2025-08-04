@@ -19,8 +19,8 @@ DEBUG = env.bool("DEBUG", default=False)
 SECRET_KEY = env("SECRET_KEY")
 
 # Convert JSON string to Python list
-ALLOWED_HOSTS = json.loads(env("ALLOWED_HOSTS", default="[]"))
-CSRF_TRUSTED_ORIGINS = json.loads(env("CSRF_TRUSTED_ORIGINS", default="[]"))
+ALLOWED_HOSTS = env("ALLOWED_HOSTS", default="").split(",")
+CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS", default="").split(",")
 
 # Application definition
 INSTALLED_APPS = [
