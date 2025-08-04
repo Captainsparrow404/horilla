@@ -132,9 +132,8 @@ LOCALE_PATHS = [BASE_DIR / "horilla" / "locale"]
 
 # Static & Media files
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
