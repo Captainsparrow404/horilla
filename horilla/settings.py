@@ -1,24 +1,26 @@
 import os
+import json
 from pathlib import Path
 import environ
 from django.contrib.messages import constants as messages
 
-# Initialize environment variables
+# Initialize environment
 env = environ.Env(
     DEBUG=(bool, False),
     SECRET_KEY=(str, ""),
-    ALLOWED_HOSTS=(list, []),
-    CSRF_TRUSTED_ORIGINS=(list, []),
+    ALLOWED_HOSTS=(str, "[]"),
+    CSRF_TRUSTED_ORIGINS=(str, "[]"),
 )
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))  # Optional on Render
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG")
+DEBUG = env.bool("DEBUG", default=False)
 SECRET_KEY = env("SECRET_KEY")
-ALLOWED_HOSTS = env("ALLOWED_HOSTS")
-CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
+
+# Convert JSON string to Python list
+ALLOWED_HOSTS = json.loads(env("ALLOWED_HOSTS", default="[]"))
+CSRF_TRUSTED_ORIGINS = json.loads(env("CSRF_TRUSTED_ORIGINS", default="[]"))
 
 # Application definition
 INSTALLED_APPS = [
@@ -111,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-# Internationalization
+# Localization
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = env("TIME_ZONE", default="Asia/Kolkata")
 USE_I18N = True
@@ -130,7 +132,7 @@ LANGUAGES = (
 
 LOCALE_PATHS = [BASE_DIR / "horilla" / "locale"]
 
-# Static & Media files
+# Static & media files
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
@@ -147,10 +149,7 @@ MESSAGE_TAGS = {
     messages.ERROR: "oh-alert--danger",
 }
 
-# Default primary key
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# Login settings
 LOGIN_URL = "/login"
 
 # Notifications
@@ -163,10 +162,9 @@ DJANGO_NOTIFICATIONS_CONFIG = {
 }
 
 SIMPLE_HISTORY_REVERT_DISABLED = True
-
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
-# Production HTTPS settings
+# Security for production
 if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_SSL_REDIRECT = True
