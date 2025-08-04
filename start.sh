@@ -14,4 +14,7 @@ exec gunicorn horilla.wsgi:application \
   --workers 3 \
   --threads 2 \
   --timeout 120 \
-  --preload
+  --preload \
+  --log-level debug \
+  --access-logfile - \
+  --error-logfile -
