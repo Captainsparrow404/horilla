@@ -1,16 +1,12 @@
-"""
-WSGI config for horilla project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/4.1/howto/deployment/wsgi/
-"""
-
 import os
-
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "horilla.settings")
-
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'horilla.settings')
 application = get_wsgi_application()
+
+# Start the scheduler
+try:
+    from leave.scheduler import start_scheduler
+    start_scheduler()
+except Exception as e:
+    print(f"Scheduler failed to start: {e}")
